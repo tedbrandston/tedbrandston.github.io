@@ -1,0 +1,9 @@
+<head>
+  <meta charset="utf-8">
+  <title>{{ .Title }}</title>
+
+  {{ with .Site.Params.style_css -}}
+    <link rel="stylesheet" href="{{ . | absURL }}">
+  {{- end }}
+</head>
+

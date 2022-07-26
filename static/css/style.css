@@ -1,0 +1,58 @@
+* {
+  background-color: inherit;
+}
+
+html {
+  background-color: lightgrey;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+.top-nav {
+  background-color: black;
+  color: white;
+
+  /* Rounded ends */
+  border-radius: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+
+  margin: 1em;
+}
+.nav-link {
+  color: white;
+}
+
+.homepage-header {
+  text-align:  center;
+}
+
+.homepage-content {
+  padding:  5%;
+}
+
+.footer {
+  background-color: black;
+  color: white;
+
+  margin-top: auto;
+
+  /* Round just the top*/
+  border-top-right-radius: 1em;
+  border-top-left-radius: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.flex-page {
+  display: flex;
+  min-height: 100vh;
+  margin: 0;
+  flex-direction: column;
+  justify-content: flex-start;
+}
