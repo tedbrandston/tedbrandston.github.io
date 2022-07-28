@@ -2,7 +2,7 @@
 title: "Respect"
 originallyWritten: 2022-07-27T06:40:33-04:00
 tags: [communication, words, managerial-musings]
-draft: true
+draft: false
 ---
 
 During my time at Neverware I took a turn that has the director of engineering, and it really changed how I thought about the word "respect".
