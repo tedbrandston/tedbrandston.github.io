@@ -1,0 +1,26 @@
+{{- define "main" -}}
+<div class="header">
+  <h1>{{.Title}}</h1>
+</div>
+<div class="content">
+  <!-- Pull from content/writing/_index.md -->
+  {{.Content}}
+
+  <div class="flex-row">
+    {{ $ctx := .}}
+    {{ range $pagename := .Params.topRow }}
+      {{ with $ctx.GetPage (print "writing/" $pagename) }}
+        <div class="flex-row-2-item">
+
+          <a href="{{ .Permalink }}" class="post-link">{{ .Title }} </a>
+          <div>
+            {{ .Summary }}
+          </div>
+          <a href="{{ .Permalink }}" class="more">more...</a>
+
+        </div>
+      {{ end }}
+    {{ end }}
+  </div> <!-- flex-row -->
+</div>
+{{- end -}}

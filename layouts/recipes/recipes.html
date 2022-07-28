@@ -1,0 +1,20 @@
+{{- define "main" -}}
+<div class="header">
+  <h1>{{.Title}}</h1>
+</div>
+<div class="content">
+  <!-- Pull from content/writing/_index.md -->
+  {{.Content}}
+
+  {{ range .Pages }}
+  <div>
+    <a href="{{ .Permalink }}" class="post-link">{{ .Title }} </a>
+    <div>
+      {{ .Params.subtitle }}
+    </div>
+    <a href="{{ .Permalink }}" class="more">more...</a>
+  </div>
+  {{ end }}
+
+</div>
+{{- end -}}

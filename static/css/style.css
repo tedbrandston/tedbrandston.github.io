@@ -21,16 +21,22 @@ body {
 
   margin: 1em;
 }
+
 .nav-link {
   color: white;
 }
 
-.homepage-header {
+.header {
   text-align:  center;
 }
 
-.homepage-content {
+.content {
+  /* Keep a little away from the edges */
   padding:  5%;
+
+  /* Cap line length for legibility, and center on page */
+  max-width: 60em;
+  margin: auto;
 }
 
 .footer {
@@ -55,4 +61,32 @@ body {
   margin: 0;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.flex-row-2-item {
+  /* Two item row, split evenly */
+  flex-basis: 50%;
+
+  /* Cap line length, but also don't let it get foolishly short. */
+  max-width: 30em;
+  min-width: 15em;
+
+  /* TODO: a little bit of spacing between items would be good, but seems to break wrapping */
+}
+
+.post-link {
+  color: black;
+  font-weight: bold;
+}
+
+.more {
+  color: black;
+  font-style: italic;
 }

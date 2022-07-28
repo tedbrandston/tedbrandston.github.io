@@ -1,7 +1,6 @@
 ---
 title: "Ted Brandston"
 subtitle: "Has some thoughts"
-date: 2022-07-25T09:49:43-04:00
 draft: false
 ---
 
