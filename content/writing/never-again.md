@@ -2,7 +2,7 @@
 title: "Never Again"
 originallyWritten: 2022-07-27T08:21:19-04:00
 tags: [managerial-musings]
-draft: true
+draft: false
 ---
 
 Recently I have been thinking about the tendency in organizations to say: "we can't let this happen Ever Again."
