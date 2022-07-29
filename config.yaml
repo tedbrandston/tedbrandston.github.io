@@ -2,6 +2,8 @@ baseURL: "https://tedbrandston.github.io"
 languageCode: "en-us"
 title: "Ted Brandston"
 
+enableGitInfo: true
+
 params:
   # used by layouts/partials/head.html
   style_css: "css/style.css"

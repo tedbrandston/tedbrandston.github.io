@@ -8,5 +8,11 @@
   <div class="content">
     <!-- Pull from content/writing/*.md -->
     {{ .Content }}
+    <div class="meta">
+      Last modified: {{ .GitInfo.AuthorDate }}
+      <p/>
+      For full version history, see
+      <a href="https://github.com/tedbrandston/tedbrandston.github.io/commits/main/content/{{- .File.Path -}}">github</a>
+    </div>
   </div>
 {{- end -}}

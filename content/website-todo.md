@@ -6,6 +6,7 @@ draft: true
 ---
 
 TODO:
-* Look into using hugo/git thing for modification times
 * Figure out how I want to do comments
 * Index by tags
+* get a domain name
+* move meta to a partial?
