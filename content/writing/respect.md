@@ -1,7 +1,7 @@
 ---
 title: "Respect"
 originallyWritten: 2022-07-27T06:40:33-04:00
-tags: [communication, words, managerial-musings]
+tags: [communication, words, managerial-musings, neverware]
 draft: false
 ---
 
