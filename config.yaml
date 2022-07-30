@@ -4,6 +4,13 @@ title: "Ted Brandston"
 
 enableGitInfo: true
 
+# allows putting html tags in markdown, but requires greater care if I ever
+# pull in external files.
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
 params:
   # used by layouts/partials/head.html
   style_css: "css/style.css"
