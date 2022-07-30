@@ -3,7 +3,7 @@ title: "Sandy's Roasted Veggies"
 originallyWritten: 2022-07-29T08:29:02-04:00
 tags: []
 ingredients: [tomato, zuccini, bell-pepper, onion, what-you-will]
-draft: true
+draft: false
 ---
 
 
