@@ -92,6 +92,10 @@ body {
   margin: 1em;
 }
 
+.recipes-item {
+  margin: 1em;
+}
+
 .centered-img {
   display: block;
   margin-left: auto;
