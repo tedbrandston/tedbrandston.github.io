@@ -10,3 +10,4 @@ TODO:
 * Index by tags
 * get a domain name
 * move meta to a partial?
+* figure out why some summaries don't have links
