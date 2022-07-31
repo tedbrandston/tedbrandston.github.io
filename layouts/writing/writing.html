@@ -11,7 +11,7 @@
     {{ range $pagename := slice .Params.topPick1 .Params.topPick2  }}
 
       {{ with $ctx.GetPage (print "writing/" $pagename) }}
-        <div class="flex-row-2-item">
+        <div class="flex-row-item flex-row-2-item">
 
           <a href="{{ .Permalink }}" class="post-link">{{ .Title }} </a>
           <div>
@@ -28,7 +28,7 @@
     {{ range .Pages }}
       {{ if (or (eq .File.ContentBaseName $ctx.Params.topPick1) (eq .File.ContentBaseName $ctx.Params.topPick2) ) }}
       {{ else }}
-        <div class="flex-row-unlimited-item">
+        <div class="flex-row-item flex-row-unlimited-item">
 
           <a href="{{ .Permalink }}" class="post-link">{{ .Title }} </a>
           <div>
