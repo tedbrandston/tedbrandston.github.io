@@ -7,6 +7,10 @@ draft: false
 
 I think the last chapter of [_Because Internet: Understanding the New Rules of Language_](https://www.goodreads.com/book/show/36739320-because-internet) by Gretchen McCulloch describes beautifully the way we each have our own, personal version of our languages, and what's captured in the dictionary is more of an aggregate snapshot. 
 
+What she doesn't get into is how many problems it can cause.
+
+<!--more-->
+
 One of my really early memories about this is of watching [this comedy routine](https://www.harrisonline.com/brian-regan-3/) (I'm astonished I was able to find this). Based on the date on that transcript I must have been at least seven or eight years old, and I don't think I was older than about twelve. Anyway, in it this comedian talks about meeting his college roommate who suggests they split "a pie", which apparently is not used to mean a pizza where he grew up. I may not call pizza "pie", but I've had enough exposure to that usage that I can interpret it correctly in most contexts. This idea, that regionalisms like this could so confuse people, blew Little Ted's mind. It really stuck with me.
 
 It's not just regional variations, though. An example I'm regularly reminded of in daily life are the words "racism" and "racist". 

@@ -9,6 +9,8 @@ Writing about [a solar biochar kiln](/writing/solar-biochar-at-home.md) left me 
 
 (I should note: I didn't read all of those articles in full, most of them I skimmed. I know, I know, I know -- I'm part of the problem. They also mostly cite the same couple of studies. I might try to write more about that later...)
 
+<!--more-->
+
 A couple of those articles touch on this, but I think it's worth exploring on its own: there are different kinds of "eco friendly". There are different ways that we're at risk of seriously changing the ecology of our planet. Also, we've realized different ways we might significantly change our environment at different times, so an intervention targeted at one thing (like plastic pollution) may turn out to worsen another (like ozone depletion). 
 
 It's a very complex system, and I suspect almost every intervention will have some trade-offs, but most of the time I read about these things people seem to feel the need to end with a strong declaration of "this is good" or "this is bad". It's hard to hold in our heads these complex systems of effects/trade-offs.
