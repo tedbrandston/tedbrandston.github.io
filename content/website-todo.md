@@ -7,9 +7,8 @@ draft: true
 
 TODO:
 * Figure out how I want to do comments
-* Index by tags
-* get a domain name
 * move meta to a partial?
+* Add index pages to footer
 * figure out why some summaries don't have links
   - also, maybe figure out a better way to do summaries. I feel like I have to format things with both the summary view and the page view in mind.
 * link liveness checker

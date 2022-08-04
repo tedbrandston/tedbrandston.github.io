@@ -95,6 +95,11 @@ body {
   margin: 1em;
 }
 
+.indexed-item-col {
+  font-weight: bold;
+  min-width: 3em;
+}
+
 .centered-img {
   display: block;
   margin-left: auto;

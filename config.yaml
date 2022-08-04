@@ -4,6 +4,10 @@ title: "Ted Brandston"
 
 enableGitInfo: true
 
+taxonomies:
+  tag: tags
+  ingredient: ingredients
+
 # allows putting html tags in markdown, but requires greater care if I ever
 # pull in external files.
 markup:
