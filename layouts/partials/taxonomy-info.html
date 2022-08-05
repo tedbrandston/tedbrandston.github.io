@@ -1,0 +1,14 @@
+<span>
+  {{ with .Params.tags }}
+    Tags:
+    {{ range . }}
+      <a href="/tags/index.html#{{- . -}}">{{ . }}</a>
+    {{ end }}
+  {{ end }}
+  {{ with .Params.ingredients }}
+    Ingredient tags:
+    {{ range . }}
+      <a href="/ingredients/index.html#{{- . -}}">{{ . }}</a>
+    {{ end }}
+  {{ end }}
+</span>
