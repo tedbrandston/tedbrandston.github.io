@@ -1,25 +1,19 @@
 {{- define "main" -}}
-  <div class="header">
-    <h1>{{.Title}}</h1>
-  </div>
-
-  <div class="content">
-    <table>
-    {{ range .Data.Terms.Alphabetical }}
-      <colgroup>
-        <col class="indexed-item-col">
-        <col class="indexed-page-col">
-      </colgroup>
-      <tr>
-        <td class="indexed-item-col" colspan="2" id="{{ .Name }}">{{ .Name }}</td>
-      </tr>
-      {{ range .Pages }}
-      <tr>
-        <td><!-- This cell intentionally left blank --></td>
-        <td><a href="{{ .Permalink }}">{{ .Title }} </a></td>
-      </tr>
-      {{ end }}
+  <table>
+  {{ range .Data.Terms.Alphabetical }}
+    <colgroup>
+      <col class="indexed-item-col">
+      <col class="indexed-page-col">
+    </colgroup>
+    <tr>
+      <td class="indexed-item-col" colspan="2" id="{{ .Name }}">{{ .Name }}</td>
+    </tr>
+    {{ range .Pages }}
+    <tr>
+      <td><!-- This cell intentionally left blank --></td>
+      <td><a href="{{ .Permalink }}">{{ .Title }} </a></td>
+    </tr>
     {{ end }}
-    </table>
-  </div>
+  {{ end }}
+  </table>
 {{- end -}}

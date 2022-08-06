@@ -1,11 +1,4 @@
 {{- define "main" -}}
-<div class="header">
-  <h1>{{.Title}}</h1>
-</div>
-<div class="content">
-  <!-- Pull from content/writing/_index.md -->
-  {{.Content}}
-
   {{ $ctx := .}}
   <div class="flex-row">
     {{ range $pagename := slice .Params.topPick1 .Params.topPick2  }}
@@ -40,5 +33,4 @@
       {{ end }}
     {{ end }}
   </div> <!-- flex-row -->
-</div>
 {{- end -}}

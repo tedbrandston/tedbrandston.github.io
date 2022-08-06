@@ -1,11 +1,14 @@
-<span>
-  Last modified:
-  {{ with .GitInfo }}
-    {{ .AuthorDate }}
-  {{ else }}
-    unknown
-  {{ end }}
-  •
-  For full version history, see
-  <a href="https://github.com/tedbrandston/tedbrandston.github.io/commits/main/content/{{- .File.Path -}}">github</a>
-</span>
+{{- $ctx := . -}}
+{{- with .File -}}
+  <span>
+    Last modified:
+    {{ with $ctx.GitInfo }}
+      {{ .AuthorDate }}
+    {{ else }}
+      unknown
+    {{ end }}
+    •
+    For full version history, see
+    <a href="https://github.com/tedbrandston/tedbrandston.github.io/commits/main/content/{{- .Path -}}">github</a>
+  </span>
+{{- end -}}

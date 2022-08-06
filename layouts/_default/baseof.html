@@ -3,10 +3,23 @@
   {{ partial "head.html" . }}
   <body class="flex-page">
     {{- partial "top-nav.html" . -}}
-    <div id=content>
+    <div class="header">
+      <h1>{{.Title}}</h1>
+      {{ with .Params.subtitle }}
+        <h2> {{ . }}</h2>
+      {{ end }}
+    </div>
+    <div class="content">
+      <!-- Pull whatever's in the corresponding content/<something>/_index.md -->
+      {{ .Content }}
       {{- block "main" . -}}
         <!-- The part of the page that begins to differ between templates -->
-      {{ end }}
+      {{- end -}}
+      <div class="meta">
+        {{- block "meta" . -}}
+          <!-- Tags, date modified, etc. -->
+        {{- end -}}
+      </div>
     </div>
     {{- partial "footer.html" . -}}
   </body>

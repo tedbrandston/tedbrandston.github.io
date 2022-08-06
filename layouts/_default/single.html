@@ -1,17 +1,5 @@
-{{- define "main" -}}
-  <div class="header">
-    <h1>{{ .Title }}</h1>
-    {{ with .Params.subtitle }}
-      <h2> {{ . }}</h2>
-    {{ end }}
-  </div>
-  <div class="content">
-    <!-- Pull from content/<something>/*.md -->
-    {{ .Content }}
-    <div class="meta">
-      {{ partial "last-modified.html" . }}
-      <br/>
-      {{ partial "taxonomy-info.html" . }}
-    </div>
-  </div>
+{{- define "meta" -}}
+  {{- partial "last-modified.html" . -}}
+  <br/>
+  {{- partial "taxonomy-info.html" . -}}
 {{- end -}}
