@@ -24,6 +24,7 @@ body {
 
 .nav-link {
   color: white;
+  font-size: large;
 }
 
 .header {
@@ -124,6 +125,8 @@ body {
 .basic-button {
   background-color: black;
   color: white;
+
+  font-size: medium;
 
   /* Rounded ends */
   border-radius: 1em;
