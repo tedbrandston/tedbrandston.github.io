@@ -20,6 +20,11 @@
           <!-- Tags, date modified, etc. -->
         {{- end -}}
       </div>
+      <div class="comments">
+        {{- block "comments" . -}}
+          <!--  -->
+        {{- end -}}
+      </div>
     </div>
     {{- partial "footer.html" . -}}
   </body>

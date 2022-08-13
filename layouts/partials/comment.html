@@ -1,0 +1,27 @@
+<button id="partial-comment-button" class="basic-button" type="button">comment</button>
+<iframe
+    id="partial-comment-formholder"
+    frameborder="0"
+    marginheight="0"
+    marginwidth="0"
+    src="https://docs.google.com/forms/d/e/1FAIpQLSdYrNkJDU95yDIi6LPxX8RrqSsK1zQDCzO3c9BYZF3fhIV8hA/viewform?embedded=true&entry.1602680951={{ .Page.Permalink }}">
+  Loading comments form…
+</iframe>
+<script type="text/javascript">
+  "use strict";
+
+  let button = document.querySelector('#partial-comment-button');
+  let formholder = document.querySelector('#partial-comment-formholder');
+
+  var formVisible = false;
+
+  button.addEventListener('click', (event) => {
+    if (formVisible) {
+      formholder.style.height = '0px';
+    } else {
+      // height=868 taken from the google-forms supplied embed code.
+      formholder.style.height = '868px';
+    }
+    formVisible = !formVisible;
+  });
+</script>

@@ -6,6 +6,10 @@ modified: 2022-08-07T09:54:10-04:00
 # to-write
 
 To write:
+from comments.md:
+  "Comments online are hard"
+  "Moderating online conversations is hard"
+  anonymous posting in various contexts
 Question: radio tower == lightbulb?
 Conceptual groupings/chicken egg
 "How things usually are" != "How things should be"

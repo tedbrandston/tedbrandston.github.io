@@ -120,3 +120,24 @@ body {
   font-style: italic;
   font-size: x-small;
 }
+
+.basic-button {
+  background-color: black;
+  color: white;
+
+  /* Rounded ends */
+  border-radius: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+
+  margin: 1em;
+}
+
+#partial-comment-formholder {
+  width: 640px;
+  height: 0px;
+
+  transition-property: height;
+  transition-duration: 1s;
+  transition-timing-function: ease-out;
+}
