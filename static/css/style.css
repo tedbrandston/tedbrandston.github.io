@@ -27,12 +27,6 @@ body {
   font-size: large;
 }
 
-@media (max-width: 700px) {
-  .nav-link {
-    font-size: x-large;
-  }
-}
-
 .header {
   text-align:  center;
 }
@@ -126,12 +120,6 @@ body {
 .meta {
   font-style: italic;
   font-size: x-small;
-}
-
-@media (max-width: 700px) {
-  .meta {
-    font-size: small;
-  }
 }
 
 .basic-button {
