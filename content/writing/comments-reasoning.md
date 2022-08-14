@@ -2,7 +2,7 @@
 title: "Comments on This Website"
 originallyWritten: 2022-08-08T06:33:17-04:00
 tags: [ted-overthinking-things, online-communication, comments]
-draft: true
+draft: false
 ---
 
 Comments online are hard. Moderating online conversations is hard. At the same time having that
