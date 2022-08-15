@@ -1,7 +1,7 @@
 ---
 title: "Tuna Salad"
 originallyWritten: 2022-07-28T21:58:21-04:00
-tags: [tuna, sardines, carrots, celery, capers, shallot, gross-white-stuff, mustard]
+ingredients: [tuna, sardines, carrots, celery, capers, shallot, gross-white-stuff, mustard]
 draft: false
 subtitle: "The best tuna salad has sardines in it."
 ---

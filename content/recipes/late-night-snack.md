@@ -1,7 +1,7 @@
 ---
 title: "Late Night Snack"
 originallyWritten: 2022-08-02T21:21:33-04:00
-tags: [peanut-butter, paprika, pepper]
+ingredients: [peanut-butter, paprika, pepper]
 draft: false
 ---
 
