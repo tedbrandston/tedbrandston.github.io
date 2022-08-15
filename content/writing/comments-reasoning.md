@@ -5,8 +5,7 @@ tags: [ted-overthinking-things, online-communication, comments]
 draft: false
 ---
 
-Comments online are hard. Moderating online conversations is hard. At the same time having that
-potential for interaction, for connection with other people, feels worth doing hard work for.
+Comments online are hard. Moderating online conversations is hard. At the same time having that potential for interaction, for connection with other people, feels worth doing hard work for.
 
 So how should comments work on this website?
 
@@ -23,7 +22,7 @@ When someone submits a comment on my website I will do my best to follow this pr
 5. If I think I understand and the comment is just negative without substance (e.g. "If you think this you're an idiot"), then I might reach out to the commenter and see if I can get a clearer picture of what the disagreement is.
 6. Once the content of the comment has been worked out, I'll post the comment along with a link to the version of the page that received the comment. I might also comment in response, or update the page itself.
 
-If there's no contact info, that's fine: I think it's important people be able to post anonymously. It just means that if I don't understand I have a more limited set of tools for getting clarity.
+If there's no contact info, that's fine: I think [it's important people be able to post anonymously](/writing/anonymity). It just means that if I don't understand I have a more limited set of tools for getting clarity.
 
 ## Why do it this way?
 
@@ -36,7 +35,7 @@ I think that there are a lot of things that can prevent good communication (this
 * Lack of [respect](/writing/respect). You've got to think about other people, because communication takes two (or more).
 * Assumptions. We often assume we understand what someone else intended/thought/felt/did. We often are wrong.
 
-By slowing the process down a bit, adding a mediator (me!), and limiting comments to those that contribute something meaningful, I think we can move towards better communication, and more productive conversations. It's not going to be perfect, but I think it can be good.
+By slowing the process down a bit, allowing anonymity (but not encouraging it), adding a mediator (me!), and limiting comments to those that contribute something meaningful, I think we can move towards better communication, and more productive conversations. It's not going to be perfect, but I think it can be good.
 
 <!-- TODO: link productive input when it's ready -->
 
