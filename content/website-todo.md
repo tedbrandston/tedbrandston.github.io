@@ -5,10 +5,7 @@ draft: true
 ---
 
 TODO:
-* Figure out how I want to do comments
-  - Then set it all up
 * www.ted... doesn't work
-* Add index pages to footer
 * Figure out a better way to do summaries. I feel like I have to format things with both the summary view and the page view in mind.
 * link liveness checker
   - make sure all internal links are valid
