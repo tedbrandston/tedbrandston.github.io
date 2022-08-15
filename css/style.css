@@ -56,6 +56,20 @@ body {
   margin-right: 1em;
 }
 
+/* I think the underline interferes with legibility of these links. */
+.footer a:link {
+  text-decoration: none;
+}
+
+/* But on hover we want to make sure it's clear that it's a link. */
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.smaller-text {
+  font-size: smaller;
+}
+
 .flex-page {
   display: flex;
   min-height: 100vh;
