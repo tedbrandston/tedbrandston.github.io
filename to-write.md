@@ -9,7 +9,6 @@ To write:
 from comments.md:
   "Comments online are hard"
   "Moderating online conversations is hard"
-  anonymous posting in various contexts
 Question: radio tower == lightbulb?
 Conceptual groupings/chicken egg
 "How things usually are" != "How things should be"
