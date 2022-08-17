@@ -1,11 +1,12 @@
 ---
 created: 2022-08-07T09:53:39-04:00
-modified: 2022-08-07T09:54:10-04:00
+modified: 2022-08-17T11:38:40-04:00
 ---
 
 # to-write
 
 To write:
+Bluest eye + thumbs up + heam
 from comments.md:
   "Comments online are hard"
   "Moderating online conversations is hard"
