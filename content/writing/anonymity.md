@@ -2,7 +2,7 @@
 title: "Anonymity"
 originallyWritten: 2022-08-15T06:35:16-04:00
 tags: [managerial-musings, neverware, communication]
-draft: False
+draft: false
 ---
 
 Another significant Neverware memory is going over the company survey results. It was considered pretty important by most people that the submissions remain anonymous. A lot of the time that seemed fine, but sometimes it made very hard to make useful changes.
