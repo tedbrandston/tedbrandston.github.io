@@ -17,3 +17,13 @@ It all feels part of a continuum of behavior to me.
 ---
 
 Many years later I watched a TEDx talk where this guy told us to give ourselves the thumbs up when we had a bad memory.
+
+The idea is basically that you are trying to teach yourself new reaction to these memories. Instead of scolding yourself you signal to your body that everything is okay, you've got it under control.
+
+--- 
+
+Now I am Reading how emotions are made, which could probably be titled "How consciousness is made" without being too misleading. A lot of what she says I already had some understanding of, as someone generally interested in psychology and neuroscience: 
+* our brains make predictions about the world, a model of what's going on, and we are interacting with that model more than we're interacting with the actual stuff in the world.
+* there are more neural pathways headed down from your "higher brain regions" to your sensory organs than from your senses up. There is evidence that your "upper brain" can override what you see, hear, etc.
+
+...
