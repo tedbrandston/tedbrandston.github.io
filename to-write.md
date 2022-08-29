@@ -1,12 +1,12 @@
 ---
 created: 2022-08-07T09:53:39-04:00
-modified: 2022-08-17T11:38:40-04:00
+modified: 2022-08-29T06:45:30-04:00
 ---
 
 # to-write
 
 To write:
-Bluest eye + thumbs up + heam
+https://en.m.wikipedia.org/wiki/Self-reference_effect
 from comments.md:
   "Comments online are hard"
   "Moderating online conversations is hard"
