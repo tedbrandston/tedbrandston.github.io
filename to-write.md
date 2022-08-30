@@ -1,6 +1,6 @@
 ---
 created: 2022-08-07T09:53:39-04:00
-modified: 2022-08-30T12:30:14-04:00
+modified: 2022-08-30T12:34:24-04:00
 ---
 
 # to-write
@@ -8,6 +8,7 @@ modified: 2022-08-30T12:30:14-04:00
 To write:
 https://en.m.wikipedia.org/wiki/Self-reference_effect
 What does it mean to be human -> concepts
+  Also, dehumanization implies that we normally include a certain standard of behavior when considering human
 from comments.md:
   "Comments online are hard"
   "Moderating online conversations is hard"
