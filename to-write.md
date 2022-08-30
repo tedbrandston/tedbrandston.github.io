@@ -1,12 +1,13 @@
 ---
 created: 2022-08-07T09:53:39-04:00
-modified: 2022-08-29T06:45:30-04:00
+modified: 2022-08-30T12:30:14-04:00
 ---
 
 # to-write
 
 To write:
 https://en.m.wikipedia.org/wiki/Self-reference_effect
+What does it mean to be human -> concepts
 from comments.md:
   "Comments online are hard"
   "Moderating online conversations is hard"
