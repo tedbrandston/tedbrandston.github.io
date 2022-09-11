@@ -25,7 +25,11 @@ as an example: playing certain video games can leave me feeling less mentally dr
 so that covers at least part of when to relax (when I'm feeling various kinds of depleted) and maybe points toward a framework for choosing how to relax .
 
 ## habit
+but but what is it that's leaving me tired? and can I tackle some of my work/reast balance from that end?
 
+just as if I'm physically tired a lot of the time exercise could help build my muscles and over time leave me feeling like I have more energy, if I'm mentally tired perhaps I should be " working out " to give me more mental stamina. I know people say  "the brain is like a muscle" and... it is and it's not. Yes, it seems like if you use your brain for a specific task repeatedly you'll get better at doing that task, but there is no rote set of exercises you can do (as far as I know) that will, across the board, leave you with " more mental stamina".
+
+still, if I push myself to do more work and feels comfortable over time I should have an easier time doing that work, right? well, unfortunately if you push through feeling tired over and over you get better at _that_. pushing through can become the default, a habit, and you can end up not resting enough.
 
 I don't know where this other thing fits in: 
 
