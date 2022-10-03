@@ -6,6 +6,7 @@ modified: 2022-08-30T12:34:24-04:00
 # to-write
 
 To write:
+planning in the morning
 https://en.m.wikipedia.org/wiki/Self-reference_effect
 What does it mean to be human -> concepts
   Also, dehumanization implies that we normally include a certain standard of behavior when considering human
