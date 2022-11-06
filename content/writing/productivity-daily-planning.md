@@ -1,3 +1,10 @@
+---
+title: "Productivity and Daily Planning"
+tags: [productivity]
+draft: false
+---
+
+
 productivity is something that I care about, and also something that they have struggled with. I'm not even sure their productivity is the right word for what I've struggle with: some mix of organization, choosing what to work on, finding time to work on it, and then working on the thing that I intended to work on.
 
 it's something I have struggled with both in work context and in a personal context, but recently I feel like I've made some significant changes -- and one in particular -- that have really improved my ability to get things done at work (I'm still working on bringing this to my personal time). I might touch on some of the others, but the biggest improvement seems to come from planning out what I'm going to do at the beginning of each day.
