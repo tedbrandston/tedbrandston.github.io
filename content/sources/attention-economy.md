@@ -1,3 +1,9 @@
+---
+title: "The Attention Economy"
+tags: [article]
+draft: true
+---
+
 https://www.scientificamerican.com/article/information-overload-helps-fake-news-spread-and-social-media-knows-it/
 
 this is an article from late 2020 that talks about the intersection of cognitive biases and social media algorithms, specifically where a lot of the bad outcomes we see might be coming from.
