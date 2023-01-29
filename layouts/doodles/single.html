@@ -4,6 +4,10 @@
       return Math.floor(Math.random() * exclusive_upper_bound);
     }
 
+    function log_int(int_to_log) {
+      console.log(int_to_log);
+    }
+
     async function init() {
       const canvas = document.getElementById("doodle-canvas");
       const wasm = canvas.getAttribute("wasm-target");
@@ -14,6 +18,7 @@
           "env": {
             "js_random": Math.random,
             "js_random_uint": random_uint,
+            "js_log_int": log_int,
           }
         }
       );
