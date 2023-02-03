@@ -27,3 +27,8 @@ Planting ideas / solution diversity
 Cheese, kale, capers
 Neverware Glass
 My first thought with the kids is often a scary game to get them moving. "All men use rape"?
+
+sources:
+  laadan
+  woman and nature
+  happiness: a history 
