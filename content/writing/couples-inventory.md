@@ -4,7 +4,7 @@ tags: [parenting]
 draft: false
 ---
 
-Every once in a while Kat and I do a "Couples Inventory". Just a list of questions we ask, to make sure we're addressing the things we need to be addressing. Here's an edited version of that list:
+Every once in a while Kat and I do a "Couples Inventory". Just a list of questions we ask, to make sure we're addressing the things we need to be addressing. Kat proposed we start doing this shortly after we became parents, and I think it's been really helpful. Here's an edited version of that list:
 
 <!--more-->
 
@@ -29,6 +29,8 @@ Every once in a while Kat and I do a "Couples Inventory". Just a list of questio
 17. Are the questions we're asking helpful? Are there any questions we should be asking that we're not?
 
 Again, even when the answer is "yes" we talk through specifics. When we identify something going awry, we talk about how we could do things differently. A lot of the time just identifying the problem is enough to improve things, but far from always.
+
+I think when we started doing this we did it every couple of months, but now we do it a few times a year.
 
 Some notes on those, since they're a little jargony:
 1. It's very easy to end up just talking about this one shared project, when there's so much else in our lives to talk about.
