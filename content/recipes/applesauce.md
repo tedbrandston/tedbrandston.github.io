@@ -2,7 +2,7 @@
 title: "Applesauce"
 originallyWritten: 2023-11-22T09:45:03-05:00
 tags: [apples, pears, lemons, cinnamon, cardamom, nutmeg, ginger]
-draft: true
+draft: false
 subtitle: "The best applesauce has pears in it."
 ---
 
