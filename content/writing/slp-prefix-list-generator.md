@@ -21,4 +21,4 @@ I gave Gemini 3 Pro the prompt:
 
 The first page it produced didn't work, but I gave it a screenshot and said that it wasn't working, and the second try seems to work just fine.
 
-The result is here: [Prefix Generator](./slp-prefix-gen.html)
+The result is here: [Prefix Generator](/slp-prefix-gen.html)
