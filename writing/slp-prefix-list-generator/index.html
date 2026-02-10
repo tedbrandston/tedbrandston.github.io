@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>SLP prefix generator</title><link rel=stylesheet href=https://tedbrandston.github.io/css/style.css></head><body class=flex-page><header class=top-nav><a href=/ class="link-home nav-link">Main page</a>
+•
+<a href=/writing class=nav-link>Writing</a>
+•
+<a href=/sources class=nav-link>Sources</a>
+•
+<a href=/recipes class=nav-link>Recipes</a>
+•
+<a href=/doodles class=nav-link>Doodles</a></header><div class=header><h1>SLP prefix generator</h1></div><div class=content><p>I&rsquo;m generally suspicious of the gen-AI hype, but also curious about how this&rsquo;ll all go.</p><p>The other day Kat tried to generate some lists of words with certain prefixes by asking an AI chatbot. It made up words like &ldquo;unpossible&rdquo; because LLMs don&rsquo;t actually understand how words are spelled (see, for example, all the odd answers to &ldquo;how many Rs in &lsquo;strawberry&rsquo;&rdquo;).</p><p>But what if we ask the AI to make a tool that generates the thing we want? The risk if it&rsquo;s wrong is fairly low, and after the initial generation we stop using the AI (and all the energy that goes into running it).</p><p>I gave Gemini 3 Pro the prompt:</p><blockquote><p>I&rsquo;d like to make a tool for an SLP to generate word lists for given prefixes. This should be a single-page html+js utility.</p></blockquote><blockquote><p>The words can be pulled from wiktionary, e.g., <a href=https://en.wiktionary.org/wiki/Category:English_terms_prefixed_with_un-_(negative)>https://en.wiktionary.org/wiki/Category:English_terms_prefixed_with_un-_(negative)</a>, and if there are multiple meanings of the prefix they should be able to choose which meaning (so from <a href=https://en.wiktionary.org/wiki/un->https://en.wiktionary.org/wiki/un-</a> they should also be able to choose un- (negative), un- (reversive), etc.) from a dropdown, where each item in the dropdown shows how many words there are in that category.</p><p>words should be listed in frequency order (is there a free API you can use for that?), ideally with a numeric indicator of frequency.</p></blockquote><p>The first page it produced didn&rsquo;t work, but I gave it a screenshot and said that it wasn&rsquo;t working, and the second try seems to work just fine.</p><p>The result is here: [Prefix Generator][./slp-prefix-gen.html]</p><div class=meta><span>Last modified:
+2026-02-10 17:06:37 -0500 -0500
+•
+For full version history, see
+<a href=https://github.com/tedbrandston/tedbrandston.github.io/commits/main/content/writing/slp-prefix-list-generator.md>github</a></span><br><span>Tags:
+<a href=/tags/index.html#tools>tools</a>
+<a href=/tags/index.html#ai>ai</a></span></div><div class=comments><button id=partial-comment-button class=basic-button type=button>comment</button>
+<iframe id=partial-comment-formholder frameborder=0 marginheight=0 marginwidth=0 src="https://docs.google.com/forms/d/e/1FAIpQLSdYrNkJDU95yDIi6LPxX8RrqSsK1zQDCzO3c9BYZF3fhIV8hA/viewform?embedded=true&entry.1602680951=https%3a%2f%2ftedbrandston.github.io%2fwriting%2fslp-prefix-list-generator%2f">Loading comments form…</iframe>
+<script type=text/javascript>"use strict";let button=document.querySelector("#partial-comment-button"),formholder=document.querySelector("#partial-comment-formholder");var formVisible=!1;button.addEventListener("click",e=>{formVisible?formholder.style.height="0px":formholder.style.height="868px",formVisible=!formVisible})</script></div></div><div class=footer>Is it clear I have no idea how to make a website?<br><a href=/tags class="nav-link smaller-text">Index by Tag</a>
+•
+<a href=/ingredients class="nav-link smaller-text">Index by Ingredient</a>
+•
+<a href=/writing/comments-reasoning class="nav-link smaller-text">Comments on This Website</a></div></body></html>

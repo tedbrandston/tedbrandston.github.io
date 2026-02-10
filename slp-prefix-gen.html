@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLP Prefix Word List Generator</title>
+    <style>
+        :root {
+            --primary: #2c7a7b; /* Teal for medical/clinical feel */
+            --secondary: #e6fffa;
+            --border: #cbd5e0;
+            --text: #2d3748;
+            --light-text: #718096;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f7fafc;
+            color: var(--text);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        h1 { margin: 0; color: var(--primary); font-size: 1.5rem; }
+        p.subtitle { color: var(--light-text); margin-top: 0.5rem; font-size: 0.9rem; }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+            align-items: flex-end;
+        }
+
+        .field { flex: 1; }
+        label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 0.5rem; color: var(--text); }
+        
+        input[type="text"], select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1rem;
+            background: white;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            height: 46px; /* Align with inputs */
+        }
+        button:hover { opacity: 0.9; }
+        button:disabled { background-color: var(--border); cursor: not-allowed; }
+        button.secondary { background-color: white; border: 1px solid var(--border); color: var(--text); }
+
+        #step2 { display: none; border-left: 4px solid var(--primary); }
+        
+        .loading { color: var(--light-text); font-style: italic; display: none; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.95rem; }
+        th { text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: var(--light-text); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        tr:last-child td { border-bottom: none; }
+        
+        .freq-badge {
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #4a5568;
+            font-family: monospace;
+        }
+        
+        /* Frequency indicators */
+        .high-freq { color: #276749; background: #c6f6d5; }
+        .med-freq { color: #744210; background: #feebc8; }
+        .low-freq { color: #718096; background: #edf2f7; }
+
+        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        
+        .hidden { display: none !important; }
+
+        .error-msg { color: #e53e3e; font-size: 0.9rem; margin-top: 0.5rem; display: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>SLP Prefix Word List Generator</h1>
+    <p class="subtitle">Generate semantically filtered word lists sorted by frequency.</p>
+</header>
+
+<div class="card">
+    <div class="input-group">
+        <div class="field">
+            <label for="prefixInput">1. Enter Prefix (e.g., "un", "re", "pre")</label>
+            <input type="text" id="prefixInput" placeholder="Enter prefix..." onkeydown="if(event.key==='Enter') findCategories()">
+        </div>
+        <button onclick="findCategories()" id="searchBtn">Find Meanings</button>
+    </div>
+    <div id="searchMsg" class="loading">Searching Wiktionary...</div>
+    <div id="step1Error" class="error-msg"></div>
+</div>
+
+<div class="card" id="step2">
+    <label for="categorySelect">2. Choose the specific category/meaning:</label>
+    <div class="input-group">
+        <select id="categorySelect"></select>
+        <button onclick="generateList()" id="generateBtn">Generate List</button>
+    </div>
+    <p style="font-size: 0.85rem; color: #718096; margin-top: 0;">
+        <span id="catCount"></span>
+    </p>
+</div>
+
+<div class="card hidden" id="resultsCard">
+    <div class="toolbar">
+        <strong>Results (<span id="resultCount">0</span>)</strong>
+        <div>
+            <button class="secondary" onclick="copyTable()">Copy to Clipboard</button>
+        </div>
+    </div>
+    <div id="loadingWords" class="loading">Fetching words and frequency data...</div>
+    <div id="tableContainer">
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th width="10%">Rank</th>
+                    <th width="60%">Word</th>
+                    <th width="30%">Frequency (per mil)</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const WIKI_API = "https://en.wiktionary.org/w/api.php";
+    const DATAMUSE_API = "https://api.datamuse.com/words";
+
+    // 1. Find Categories based on prefix
+    async function findCategories() {
+        const prefix = document.getElementById('prefixInput').value.trim();
+        const errorMsg = document.getElementById('step1Error');
+
+        if (!prefix) return;
+
+        const btn = document.getElementById('searchBtn');
+        const msg = document.getElementById('searchMsg');
+        const step2 = document.getElementById('step2');
+
+        btn.disabled = true;
+        msg.style.display = 'block';
+        msg.textContent = 'Searching Wiktionary for meanings...';
+        errorMsg.style.display = 'none';
+        step2.style.display = 'none';
+        document.getElementById('resultsCard').classList.add('hidden');
+
+        // We look for categories strictly starting with "English terms prefixed with..."
+        const searchPrefix = `English terms prefixed with ${prefix}-`;
+
+        const params = new URLSearchParams({
+            action: 'query',
+            list: 'allcategories',
+            acprefix: searchPrefix,
+            acprop: 'size',
+            format: 'json',
+            origin: '*' // Required for CORS
+        });
+
+        try {
+            const response = await fetch(`${WIKI_API}?${params}`);
+            const data = await response.json();
+
+            const select = document.getElementById('categorySelect');
+            select.innerHTML = '';
+
+            const categories = data.query?.allcategories || [];
+
+            if (categories.length === 0) {
+                errorMsg.textContent = `No categories found for "${prefix}-". Try a different prefix.`;
+                errorMsg.style.display = 'block';
+                msg.style.display = 'none';
+                btn.disabled = false;
+                return;
+            }
+
+            // Populate Dropdown
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat['*']; // This is the category name WITHOUT "Category:" prefix
+                // Clean up the text for display (remove "English terms prefixed with")
+                const cleanName = cat['*'].replace('English terms prefixed with ', '');
+                opt.textContent = `${cleanName} (${cat.size} words)`;
+                opt.dataset.count = cat.size;
+                select.appendChild(opt);
+            });
+
+            // Update UI
+            msg.style.display = 'none';
+            step2.style.display = 'block';
+            updateCountLabel();
+
+            // Listener to update count when selection changes
+            select.onchange = updateCountLabel;
+
+        } catch (err) {
+            errorMsg.textContent = "Error connecting to Wiktionary. Please check your internet connection.";
+            errorMsg.style.display = 'block';
+            msg.style.display = 'none';
+            console.error(err);
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    function updateCountLabel() {
+        const select = document.getElementById('categorySelect');
+        const count = select.options[select.selectedIndex].dataset.count;
+        document.getElementById('catCount').textContent = `This category contains approximately ${count} words.`;
+    }
+
+    // 2. Generate the List (Fetch Words + Fetch Frequency)
+    async function generateList() {
+        let category = document.getElementById('categorySelect').value;
+        const prefixInput = document.getElementById('prefixInput').value.trim();
+
+        const card = document.getElementById('resultsCard');
+        const loader = document.getElementById('loadingWords');
+        const tbody = document.querySelector('#resultsTable tbody');
+
+        // FIX: Ensure category has the namespace prefix
+        if (!category.startsWith("Category:")) {
+            category = "Category:" + category;
+        }
+
+        card.classList.remove('hidden');
+        loader.style.display = 'block';
+        tbody.innerHTML = '';
+        document.getElementById('resultCount').textContent = '-';
+
+        try {
+            // A. Fetch Wiktionary Members
+            const wikiParams = new URLSearchParams({
+                action: 'query',
+                list: 'categorymembers',
+                cmtitle: category, // Now correctly formatted with "Category:"
+                cmlimit: 500,
+                cmnamespace: 0, // Only actual words
+                format: 'json',
+                origin: '*'
+            });
+
+            const wikiRes = await fetch(`${WIKI_API}?${wikiParams}`);
+            const wikiData = await wikiRes.json();
+            const rawWords = wikiData.query?.categorymembers || [];
+
+            if (rawWords.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3">No words found in this category.</td></tr>';
+                document.getElementById('resultCount').textContent = '0';
+                loader.style.display = 'none';
+                return;
+            }
+
+            // B. Fetch Frequency Data from Datamuse (Wildcard search)
+            const dmParams = new URLSearchParams({
+                sp: `${prefixInput}*`,
+                md: 'f', // metadata: frequency
+                max: 1000
+            });
+
+            const dmRes = await fetch(`${DATAMUSE_API}?${dmParams}`);
+            const dmData = await dmRes.json();
+
+            // Create a map for quick lookup: word -> frequency value
+            const freqMap = {};
+            dmData.forEach(item => {
+                if(item.tags && item.tags[0]) {
+                    const freqStr = item.tags.find(t => t.startsWith('f:'));
+                    if(freqStr) {
+                        freqMap[item.word.toLowerCase()] = parseFloat(freqStr.split(':')[1]);
+                    }
+                }
+            });
+
+            // C. Merge and Sort
+            let processedList = rawWords.map(w => {
+                const word = w.title;
+                const freq = freqMap[word.toLowerCase()] || 0; // Default to 0 if not in top 1000
+                return { word, freq };
+            });
+
+            // Sort by frequency (descending)
+            processedList.sort((a, b) => b.freq - a.freq);
+
+            // D. Render
+            document.getElementById('resultCount').textContent = processedList.length;
+
+            processedList.forEach((item, index) => {
+                const tr = document.createElement('tr');
+
+                // Rank
+                const tdRank = document.createElement('td');
+                tdRank.textContent = index + 1;
+                tr.appendChild(tdRank);
+
+                // Word
+                const tdWord = document.createElement('td');
+                tdWord.style.fontWeight = "bold";
+                tdWord.textContent = item.word;
+                tr.appendChild(tdWord);
+
+                // Frequency
+                const tdFreq = document.createElement('td');
+                const span = document.createElement('span');
+                span.className = 'freq-badge ' + getFreqClass(item.freq);
+                span.textContent = item.freq > 0 ? item.freq.toFixed(2) : "< 0.1";
+                tdFreq.appendChild(span);
+                tr.appendChild(tdFreq);
+
+                tbody.appendChild(tr);
+            });
+
+        } catch (err) {
+            console.error(err);
+            tbody.innerHTML = '<tr><td colspan="3" style="color:red">Error generating list. Please try again.</td></tr>';
+        } finally {
+            loader.style.display = 'none';
+        }
+    }
+
+    function getFreqClass(freq) {
+        if (freq > 10) return 'high-freq';
+        if (freq > 1) return 'med-freq';
+        return 'low-freq';
+    }
+
+    function copyTable() {
+        const rows = document.querySelectorAll('#resultsTable tr');
+        let text = "";
+        rows.forEach(row => {
+            const cols = row.querySelectorAll('th, td');
+            let rowData = [];
+            cols.forEach(col => rowData.push(col.innerText));
+            text += rowData.join("\t") + "\n";
+        });
+        
+        navigator.clipboard.writeText(text).then(() => {
+            alert("List copied to clipboard!");
+        });
+    }
+</script>
+
+</body>
+</html>
