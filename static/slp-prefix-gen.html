@@ -6,7 +6,7 @@
     <title>SLP Prefix Word List Generator</title>
     <style>
         :root {
-            --primary: #2c7a7b; /* Teal for medical/clinical feel */
+            --primary: #2c7a7b;
             --secondary: #e6fffa;
             --border: #cbd5e0;
             --text: #2d3748;
@@ -45,11 +45,12 @@
             gap: 10px;
             margin-bottom: 1rem;
             align-items: flex-end;
+            flex-wrap: wrap; /* Helps on very small screens */
         }
 
-        .field { flex: 1; }
+        .field { flex: 1; min-width: 200px; }
         label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 0.5rem; color: var(--text); }
-        
+
         input[type="text"], select {
             width: 100%;
             padding: 0.75rem;
@@ -57,6 +58,7 @@
             border-radius: 4px;
             font-size: 1rem;
             background: white;
+            box-sizing: border-box; /* Fixes padding issues */
         }
 
         button {
@@ -68,21 +70,22 @@
             font-weight: bold;
             cursor: pointer;
             transition: opacity 0.2s;
-            height: 46px; /* Align with inputs */
+            height: 46px;
+            white-space: nowrap;
         }
         button:hover { opacity: 0.9; }
         button:disabled { background-color: var(--border); cursor: not-allowed; }
         button.secondary { background-color: white; border: 1px solid var(--border); color: var(--text); }
 
         #step2 { display: none; border-left: 4px solid var(--primary); }
-        
+
         .loading { color: var(--light-text); font-style: italic; display: none; }
-        
+
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.95rem; }
         th { text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: var(--light-text); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
         td { padding: 10px; border-bottom: 1px solid #eee; }
         tr:last-child td { border-bottom: none; }
-        
+
         .freq-badge {
             background: #edf2f7;
             padding: 2px 6px;
@@ -91,14 +94,13 @@
             color: #4a5568;
             font-family: monospace;
         }
-        
-        /* Frequency indicators */
+
         .high-freq { color: #276749; background: #c6f6d5; }
         .med-freq { color: #744210; background: #feebc8; }
         .low-freq { color: #718096; background: #edf2f7; }
 
         .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        
+
         .hidden { display: none !important; }
 
         .error-msg { color: #e53e3e; font-size: 0.9rem; margin-top: 0.5rem; display: none; }
@@ -115,7 +117,7 @@
     <div class="input-group">
         <div class="field">
             <label for="prefixInput">1. Enter Prefix (e.g., "un", "re", "pre")</label>
-            <input type="text" id="prefixInput" placeholder="Enter prefix..." onkeydown="if(event.key==='Enter') findCategories()">
+            <input type="text" id="prefixInput" placeholder="Enter prefix..." autocapitalize="off" onkeydown="if(event.key==='Enter') findCategories()">
         </div>
         <button onclick="findCategories()" id="searchBtn">Find Meanings</button>
     </div>
@@ -162,7 +164,8 @@
 
     // 1. Find Categories based on prefix
     async function findCategories() {
-        const prefix = document.getElementById('prefixInput').value.trim();
+        // FIX 1: Force lowercase to handle mobile auto-capitalization
+        const prefix = document.getElementById('prefixInput').value.trim().toLowerCase();
         const errorMsg = document.getElementById('step1Error');
 
         if (!prefix) return;
@@ -187,7 +190,7 @@
             acprefix: searchPrefix,
             acprop: 'size',
             format: 'json',
-            origin: '*' // Required for CORS
+            origin: '*'
         });
 
         try {
@@ -200,6 +203,7 @@
             const categories = data.query?.allcategories || [];
 
             if (categories.length === 0) {
+                // Display the prefix exactly as interpreted (lowercase) so the user understands
                 errorMsg.textContent = `No categories found for "${prefix}-". Try a different prefix.`;
                 errorMsg.style.display = 'block';
                 msg.style.display = 'none';
@@ -210,20 +214,17 @@
             // Populate Dropdown
             categories.forEach(cat => {
                 const opt = document.createElement('option');
-                opt.value = cat['*']; // This is the category name WITHOUT "Category:" prefix
-                // Clean up the text for display (remove "English terms prefixed with")
+                opt.value = cat['*'];
                 const cleanName = cat['*'].replace('English terms prefixed with ', '');
                 opt.textContent = `${cleanName} (${cat.size} words)`;
                 opt.dataset.count = cat.size;
                 select.appendChild(opt);
             });
 
-            // Update UI
             msg.style.display = 'none';
             step2.style.display = 'block';
             updateCountLabel();
 
-            // Listener to update count when selection changes
             select.onchange = updateCountLabel;
 
         } catch (err) {
@@ -242,16 +243,16 @@
         document.getElementById('catCount').textContent = `This category contains approximately ${count} words.`;
     }
 
-    // 2. Generate the List (Fetch Words + Fetch Frequency)
+    // 2. Generate the List
     async function generateList() {
         let category = document.getElementById('categorySelect').value;
-        const prefixInput = document.getElementById('prefixInput').value.trim();
+        // FIX 2: Ensure we use the lowercase prefix for the Datamuse search too
+        const prefixInput = document.getElementById('prefixInput').value.trim().toLowerCase();
 
         const card = document.getElementById('resultsCard');
         const loader = document.getElementById('loadingWords');
         const tbody = document.querySelector('#resultsTable tbody');
 
-        // FIX: Ensure category has the namespace prefix
         if (!category.startsWith("Category:")) {
             category = "Category:" + category;
         }
@@ -266,9 +267,9 @@
             const wikiParams = new URLSearchParams({
                 action: 'query',
                 list: 'categorymembers',
-                cmtitle: category, // Now correctly formatted with "Category:"
+                cmtitle: category,
                 cmlimit: 500,
-                cmnamespace: 0, // Only actual words
+                cmnamespace: 0,
                 format: 'json',
                 origin: '*'
             });
@@ -284,17 +285,16 @@
                 return;
             }
 
-            // B. Fetch Frequency Data from Datamuse (Wildcard search)
+            // B. Fetch Frequency Data
             const dmParams = new URLSearchParams({
                 sp: `${prefixInput}*`,
-                md: 'f', // metadata: frequency
+                md: 'f',
                 max: 1000
             });
 
             const dmRes = await fetch(`${DATAMUSE_API}?${dmParams}`);
             const dmData = await dmRes.json();
 
-            // Create a map for quick lookup: word -> frequency value
             const freqMap = {};
             dmData.forEach(item => {
                 if(item.tags && item.tags[0]) {
@@ -308,11 +308,10 @@
             // C. Merge and Sort
             let processedList = rawWords.map(w => {
                 const word = w.title;
-                const freq = freqMap[word.toLowerCase()] || 0; // Default to 0 if not in top 1000
+                const freq = freqMap[word.toLowerCase()] || 0;
                 return { word, freq };
             });
 
-            // Sort by frequency (descending)
             processedList.sort((a, b) => b.freq - a.freq);
 
             // D. Render
@@ -321,18 +320,15 @@
             processedList.forEach((item, index) => {
                 const tr = document.createElement('tr');
 
-                // Rank
                 const tdRank = document.createElement('td');
                 tdRank.textContent = index + 1;
                 tr.appendChild(tdRank);
 
-                // Word
                 const tdWord = document.createElement('td');
                 tdWord.style.fontWeight = "bold";
                 tdWord.textContent = item.word;
                 tr.appendChild(tdWord);
 
-                // Frequency
                 const tdFreq = document.createElement('td');
                 const span = document.createElement('span');
                 span.className = 'freq-badge ' + getFreqClass(item.freq);
@@ -366,7 +362,7 @@
             cols.forEach(col => rowData.push(col.innerText));
             text += rowData.join("\t") + "\n";
         });
-        
+
         navigator.clipboard.writeText(text).then(() => {
             alert("List copied to clipboard!");
         });
