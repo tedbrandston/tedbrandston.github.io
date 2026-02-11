@@ -25,5 +25,5 @@ The first page it produced didn't work, but I gave it a screenshot and said that
 
 The result is here: [Prefix List Generator](/slp-prefix-gen.html)
 
-EDIT: I also asked it to fix a bug where capitalization messes things up.
+EDIT: I also asked it to fix a bug where capitalization messes things up.  
 EDIT2: I've also created a tool for finding multiple prefixes with the same root: [Multi-Prefix List Generator](/slp-multi-prefix-gen.html)
