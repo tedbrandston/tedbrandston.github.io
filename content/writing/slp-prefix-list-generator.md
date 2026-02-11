@@ -11,6 +11,8 @@ The other day Kat tried to generate some lists of words with certain prefixes by
 
 But what if we ask the AI to make a tool that generates the thing we want? The risk if it's wrong is fairly low, and after the initial generation we stop using the AI (and all the energy that goes into running it).
 
+<!--more-->
+
 I gave Gemini 3 Pro the prompt:
 
 > I'd like to make a tool for an SLP to generate word lists for given prefixes. This should be a single-page html+js utility.
@@ -21,6 +23,7 @@ I gave Gemini 3 Pro the prompt:
 
 The first page it produced didn't work, but I gave it a screenshot and said that it wasn't working, and the second try seems to work just fine.
 
-The result is here: [Prefix Generator](/slp-prefix-gen.html)
+The result is here: [Prefix List Generator](/slp-prefix-gen.html)
 
 EDIT: I also asked it to fix a bug where capitalization messes things up.
+EDIT2: I've also created a tool for finding multiple prefixes with the same root: [Multi-Prefix List Generator](/slp-multi-prefix-gen.html)
