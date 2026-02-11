@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLP Prefix Meaning Matcher (Wiktionary Linked)</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --secondary: #10B981;
+            --bg: #F3F4F6;
+            --surface: #FFFFFF;
+            --text: #111827;
+            --border: #E5E7EB;
+            --danger: #EF4444;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        /* Layout Components */
+        .card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        h1, h2, h3 { margin-top: 0; }
+        h1 { color: var(--primary); margin-bottom: 0.5rem; }
+        .subtitle { color: #6B7280; margin-bottom: 2rem; }
+
+        /* Step 1: Search & Add */
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: var(--secondary); color: white; }
+        .btn-danger { background: var(--danger); color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+
+        /* Meaning Selection Area */
+        #meaning-selector {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #EEF2FF;
+            border-radius: 8px;
+            border: 1px solid #C7D2FE;
+            display: none;
+        }
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* Step 2: Active List */
+        #active-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .active-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .active-item strong { color: var(--primary); }
+
+        /* Step 3: Results */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        th { background-color: #F9FAFB; font-weight: 700; }
+        
+        /* Word Links */
+        a.word-link {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            font-weight: 500;
+        }
+        a.word-link:hover {
+            border-bottom: 1px solid var(--primary);
+            color: var(--primary-dark);
+        }
+        .prefix-tag {
+            color: #6B7280;
+            font-size: 0.85em;
+            margin-left: 2px;
+        }
+        
+        .status-bar {
+            padding: 1rem;
+            background: #FEF3C7;
+            color: #92400E;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .controls {
+            display: flex; 
+            gap: 1rem; 
+            margin-bottom: 1rem; 
+            align-items: center;
+        }
+        select { padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); }
+    </style>
+</head>
+<body>
+
+    <h1>Prefix Meaning Matcher</h1>
+    <p class="subtitle">Build a list of specific prefix meanings (e.g., "in- (not)" vs "in- (into)") and find roots that work with multiple of them. <br><strong>Click any result to verify its definition on Wiktionary.</strong></p>
+
+    <div class="card">
+        <h3>1. Build Your Prefix List</h3>
+        
+        <div class="input-group">
+            <input type="text" id="prefix-input" placeholder="Enter a prefix (e.g., 'in', 're', 'de')" onkeydown="if(event.key==='Enter') searchMeanings()">
+            <button class="btn-primary" onclick="searchMeanings()" id="search-btn">Search Meanings</button>
+        </div>
+
+        <div id="meaning-selector">
+            <h4 style="margin:0;">Select the specific meaning for "<span id="current-search-term"></span>":</h4>
+            <div class="radio-group" id="meaning-options">
+                </div>
+            <button class="btn-secondary" onclick="addSelectedMeaning()">Add to List</button>
+            <button onclick="cancelSelection()" style="background:transparent; color:#666; margin-left:1rem;">Cancel</button>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0;">
+
+        <h3>Active Prefixes:</h3>
+        <ul id="active-list">
+            <li style="color:#6B7280; font-style:italic;" id="empty-msg">No prefixes added yet.</li>
+        </ul>
+
+        <div class="controls" style="margin-top: 2rem;">
+            <label>Match Requirement:</label>
+            <select id="min-match">
+                <option value="all">Match ALL selected prefixes</option>
+                <option value="2">Match 2+</option>
+                <option value="3">Match 3+</option>
+            </select>
+            
+            <label>Min Root Length:</label>
+            <select id="min-len">
+                <option value="3">3 letters</option>
+                <option value="4" selected>4 letters</option>
+            </select>
+            
+            <button class="btn-primary" onclick="generate()" id="generate-btn" disabled>Find Intersections</button>
+        </div>
+        
+        <div id="status-bar" class="status-bar"></div>
+    </div>
+
+    <div class="card" id="results-area" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Results (<span id="result-count">0</span>)</h3>
+            <button onclick="copyTable()" class="btn-secondary" style="background:#E5E7EB; color:black; border:1px solid #D1D5DB;">Copy Table</button>
+        </div>
+        <table id="results-table">
+            <thead>
+                <tr>
+                    <th>Root Word</th>
+                    <th>Combined With</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        // STATE
+        let activePrefixes = []; // Array of { prefixString: "re", category: "English terms...", display: "re- (again)" }
+
+        // DOM ELEMENTS
+        const input = document.getElementById('prefix-input');
+        const selector = document.getElementById('meaning-selector');
+        const optionsDiv = document.getElementById('meaning-options');
+        const activeList = document.getElementById('active-list');
+        const emptyMsg = document.getElementById('empty-msg');
+        const generateBtn = document.getElementById('generate-btn');
+        const status = document.getElementById('status-bar');
+        const resultsArea = document.getElementById('results-area');
+        const tbody = document.querySelector('#results-table tbody');
+
+        // --- FUNCTIONS ---
+
+        function updateUI() {
+            // Update Active List
+            activeList.innerHTML = '';
+            if (activePrefixes.length === 0) {
+                activeList.appendChild(emptyMsg);
+                generateBtn.disabled = true;
+            } else {
+                generateBtn.disabled = false;
+                activePrefixes.forEach((p, index) => {
+                    let li = document.createElement('li');
+                    li.className = 'active-item';
+                    li.innerHTML = `
+                        <strong>${p.prefixString}-</strong>
+                        <span>${p.shortName}</span>
+                        <button class="btn-danger" onclick="removePrefix(${index})">×</button>
+                    `;
+                    activeList.appendChild(li);
+                });
+            }
+        }
+
+        function removePrefix(index) {
+            activePrefixes.splice(index, 1);
+            updateUI();
+        }
+
+        async function searchMeanings() {
+            const term = input.value.trim().toLowerCase();
+            if (!term) return;
+            
+            document.getElementById('search-btn').disabled = true;
+            document.getElementById('search-btn').textContent = 'Searching...';
+
+            // Query Wiktionary for categories starting with "English terms prefixed with [term]-"
+            const url = `https://en.wiktionary.org/w/api.php?action=query&list=allcategories&acprefix=English terms prefixed with ${term}-&format=json&origin=*`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                optionsDiv.innerHTML = '';
+                document.getElementById('current-search-term').textContent = term;
+                
+                const cats = data.query.allcategories;
+                let found = false;
+
+                // Create "General" option manually if it exists in response or as a fallback
+                cats.forEach(c => {
+                    const catName = c['*'];
+                    // We only want categories that look like "English terms prefixed with X-"
+                    
+                    // Simple parser to extract the "Meaning" part
+                    let display = catName.replace(`English terms prefixed with ${term}-`, '').trim();
+                    if (display === '') display = '(General / All)';
+                    
+                    // Create radio button
+                    let div = document.createElement('div');
+                    div.className = 'radio-item';
+                    div.innerHTML = `
+                        <input type="radio" name="cat_choice" value="${catName}" id="${catName}">
+                        <label for="${catName}"><strong>${term}-</strong> ${display}</label>
+                    `;
+                    optionsDiv.appendChild(div);
+                    found = true;
+                });
+
+                if (!found) {
+                    optionsDiv.innerHTML = `<div style="padding:0.5rem">No categories found for "${term}". Try a different prefix.</div>`;
+                } else {
+                    // Auto-select first option
+                    optionsDiv.querySelector('input').checked = true;
+                }
+
+                selector.style.display = 'block';
+
+            } catch (err) {
+                alert("Error connecting to Wiktionary.");
+                console.error(err);
+            } finally {
+                document.getElementById('search-btn').disabled = false;
+                document.getElementById('search-btn').textContent = 'Search Meanings';
+            }
+        }
+
+        function addSelectedMeaning() {
+            const selected = document.querySelector('input[name="cat_choice"]:checked');
+            if (!selected) return;
+
+            const catName = selected.value;
+            const term = document.getElementById('current-search-term').textContent;
+            
+            // Clean up name for display
+            let short = catName.replace(`English terms prefixed with ${term}-`, '').trim();
+            if (short === '') short = '(General)';
+
+            activePrefixes.push({
+                prefixString: term,
+                category: catName,
+                shortName: short
+            });
+
+            // Reset Input
+            input.value = '';
+            selector.style.display = 'none';
+            updateUI();
+        }
+
+        function cancelSelection() {
+            selector.style.display = 'none';
+        }
+
+        // --- GENERATION LOGIC ---
+
+        async function fetchWordsForCategory(category, prefixStr) {
+            let words = new Set();
+            let continueToken = '';
+            
+            // Safety break loop
+            let loops = 0;
+            while (loops < 5) { // Limit to 2500 words per prefix
+                const url = `https://en.wiktionary.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:${category}&cmlimit=500&format=json&origin=*${continueToken}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                if (!data.query) break;
+
+                data.query.categorymembers.forEach(m => {
+                    // Filter: Must start with prefix, no spaces, no hyphens
+                    if (!m.title.includes(' ') && !m.title.includes('-') && m.title.toLowerCase().startsWith(prefixStr)) {
+                        words.add(m.title);
+                    }
+                });
+
+                if (data.continue) {
+                    continueToken = `&cmcontinue=${data.continue.cmcontinue}`;
+                    loops++;
+                } else {
+                    break;
+                }
+            }
+            return words;
+        }
+
+        async function generate() {
+            if (activePrefixes.length < 2) {
+                alert("You need at least 2 active prefixes to find an intersection.");
+                return;
+            }
+
+            // UI Loading State
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Fetching & calculating...';
+            status.style.display = 'block';
+            status.textContent = "Fetching word lists from Wiktionary... (This might take a few seconds)";
+            resultsArea.style.display = 'none';
+            tbody.innerHTML = '';
+
+            try {
+                // 1. Fetch all lists in parallel
+                const promises = activePrefixes.map(p => fetchWordsForCategory(p.category, p.prefixString));
+                const wordSets = await Promise.all(promises);
+                
+                // Map back to prefix object
+                activePrefixes.forEach((p, i) => {
+                    p.words = wordSets[i];
+                });
+
+                status.textContent = "Analyzing roots...";
+
+                // 2. Extract Roots
+                const minLen = parseInt(document.getElementById('min-len').value);
+                const rootMap = new Map(); // Root -> { prefixIndex: fullWord }
+
+                activePrefixes.forEach((p, pIndex) => {
+                    p.words.forEach(word => {
+                        let root = word.slice(p.prefixString.length);
+                        if (root.length >= minLen) {
+                            if (!rootMap.has(root)) rootMap.set(root, {});
+                            rootMap.get(root)[pIndex] = word;
+                        }
+                    });
+                });
+
+                // 3. Filter Intersections
+                const minMatchVal = document.getElementById('min-match').value;
+                const threshold = minMatchVal === 'all' ? activePrefixes.length : parseInt(minMatchVal);
+                
+                const results = [];
+                
+                for (const [root, matches] of rootMap.entries()) {
+                    const matchCount = Object.keys(matches).length;
+                    if (matchCount >= threshold) {
+                        // Create display HTML with Links
+                        let displayHTMLParts = [];
+                        activePrefixes.forEach((p, idx) => {
+                            if (matches[idx]) {
+                                let word = matches[idx];
+                                // Create Wiktionary Link
+                                let link = `<a href="https://en.wiktionary.org/wiki/${word}" target="_blank" class="word-link">${word}</a>`;
+                                let tag = `<span class="prefix-tag">(${p.prefixString})</span>`;
+                                displayHTMLParts.push(`${link} ${tag}`);
+                            }
+                        });
+                        results.push({ root, displayHTML: displayHTMLParts.join(', ') });
+                    }
+                }
+
+                // 4. Sort and Render
+                results.sort((a,b) => a.root.localeCompare(b.root));
+                
+                document.getElementById('result-count').textContent = results.length;
+                
+                if (results.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:2rem; color:#666;">No intersections found for these specific meanings. Try lowering the match requirement or using the "General" category.</td></tr>`;
+                } else {
+                    results.forEach(r => {
+                        let tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td><strong>${r.root}</strong></td>
+                            <td>${r.displayHTML}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+                
+                resultsArea.style.display = 'block';
+
+            } catch (err) {
+                console.error(err);
+                alert("Something went wrong. Check console.");
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Find Intersections';
+                status.style.display = 'none';
+            }
+        }
+
+        function copyTable() {
+            const table = document.getElementById('results-table');
+            let text = "";
+            
+            // Get Headers
+            text += "Root Word\tCombined With\n";
+
+            // Get Rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                let cols = row.querySelectorAll('td');
+                if (cols.length > 0) {
+                    // innerText strips HTML tags, so we just get "word (prefix)" which is perfect for clipboard
+                    text += `${cols[0].innerText}\t${cols[1].innerText}\n`;
+                }
+            });
+
+            navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard! (Links removed for easier pasting)"));
+        }
+    </script>
+</body>
+</html>
