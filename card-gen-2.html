@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Card Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        :root {
+            --card-width: 2.5in;
+            --card-height: 3.5in;
+            --cut-line: 1px dashed #ccc;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* --- UI Components --- */
+        .no-print {
+            max-width: 900px;
+            margin: 0 auto 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .mapping-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .mapping-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover { background: #0056b3; }
+
+        /* --- Card Layout --- */
+        #print-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0; /* Cards touch for shared cut lines in print */
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            border: var(--cut-line);
+            background: white;
+            position: relative;
+            box-sizing: border-box;
+            overflow: hidden;
+            display: grid;
+            grid-template-areas: 
+                "tl tc tr"
+                "mid mid mid"
+                "bl bc br";
+            grid-template-rows: 1fr 2fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 10px;
+        }
+
+        .card-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.7rem;
+            word-break: break-word;
+        }
+
+        /* Position specific styling */
+        .pos-tl { grid-area: tl; justify-content: flex-start; align-items: flex-start; }
+        .pos-tc { grid-area: tc; align-items: flex-start; }
+        .pos-tr { grid-area: tr; justify-content: flex-end; align-items: flex-start; }
+        
+        .pos-mid { 
+            grid-area: mid; 
+            flex-direction: column;
+            border-top: 1px solid #eee; /* Center line */
+            position: relative;
+        }
+
+        .big-above { font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; }
+        .med-below { font-size: 0.9rem; color: #444; }
+
+        .pos-bl { grid-area: bl; justify-content: flex-start; align-items: flex-end; }
+        .pos-bc { grid-area: bc; align-items: flex-end; }
+        .pos-br { grid-area: br; justify-content: flex-end; align-items: flex-end; }
+
+        /* --- Print Rules --- */
+        @media print {
+            .no-print { display: none; }
+            body { background: white; padding: 0; margin: 0; }
+            
+            #print-area {
+                display: block; /* Use standard flow for page breaks */
+                width: 7.5in; /* 3 cards * 2.5in */
+                margin: 0 auto;
+            }
+
+            .card {
+                float: left;
+                border: 1px dashed #000;
+                page-break-inside: avoid;
+            }
+
+            /* Force 3x3 grid logic */
+            .card:nth-child(9n+1) { clear: both; }
+            .card:nth-child(9n) { page-break-after: always; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <h1>Card Sheet Generator</h1>
+    <p>Upload a CSV to map fields to card positions. Designed for 9 cards per page (2.5" x 3.5").</p>
+    
+    <input type="file" id="csv-file" accept=".csv">
+    <button onclick="window.print()" id="print-btn" style="display:none; float: right;">Print / Save PDF</button>
+
+    <div id="mapping-container" class="mapping-grid">
+        </div>
+</div>
+
+<div id="print-area">
+    </div>
+
+<script>
+    let csvData = [];
+    let headers = [];
+    const positions = [
+        { id: 'omit', label: '[Omit from card]' },
+        { id: 'pos-tl', label: 'Small Top Left' },
+        { id: 'pos-tc', label: 'Small Top Center' },
+        { id: 'pos-tr', label: 'Small Top Right' },
+        { id: 'big-above', label: 'Big Above Center Line' },
+        { id: 'med-below', label: 'Medium Below Center Line' },
+        { id: 'pos-bl', label: 'Small Bottom Left' },
+        { id: 'pos-bc', label: 'Small Bottom Center' },
+        { id: 'pos-br', label: 'Small Bottom Right' }
+    ];
+
+    document.getElementById('csv-file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        Papa.parse(file, {
+            header: true,
+            skipEmptyLines: true,
+            complete: function(results) {
+                csvData = results.data;
+                headers = results.meta.fields;
+                renderMappingUI();
+                renderCards();
+                document.getElementById('print-btn').style.display = 'block';
+            },
+            error: function(err) {
+                alert("Error parsing CSV: " + err.message);
+            }
+        });
+    });
+
+    function renderMappingUI() {
+        const container = document.getElementById('mapping-container');
+        container.innerHTML = '<h3>Map CSV Fields:</h3>';
+        
+        headers.forEach(header => {
+            const div = document.createElement('div');
+            div.className = 'mapping-item';
+            
+            const label = document.createElement('span');
+            label.textContent = header;
+            
+            const select = document.createElement('select');
+            select.dataset.header = header;
+            select.onchange = renderCards;
+            
+            positions.forEach(pos => {
+                const opt = document.createElement('option');
+                opt.value = pos.id;
+                opt.textContent = pos.label;
+                select.appendChild(opt);
+            });
+            
+            div.appendChild(label);
+            div.appendChild(select);
+            container.appendChild(div);
+        });
+    }
+
+    function renderCards() {
+        const printArea = document.getElementById('print-area');
+        printArea.innerHTML = '';
+
+        // Get current mapping from selects
+        const mapping = {};
+        document.querySelectorAll('select').forEach(sel => {
+            mapping[sel.dataset.header] = sel.value;
+        });
+
+        csvData.forEach(row => {
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            // Internal card sections
+            const sections = {
+                'pos-tl': document.createElement('div'),
+                'pos-tc': document.createElement('div'),
+                'pos-tr': document.createElement('div'),
+                'pos-mid': document.createElement('div'), // wrapper for mid
+                'pos-bl': document.createElement('div'),
+                'pos-bc': document.createElement('div'),
+                'pos-br': document.createElement('div')
+            };
+
+            // Setup the mid section structure
+            const bigAbove = document.createElement('div');
+            bigAbove.className = 'big-above';
+            const medBelow = document.createElement('div');
+            medBelow.className = 'med-below';
+            sections['pos-mid'].className = 'card-section pos-mid';
+            sections['pos-mid'].appendChild(bigAbove);
+            sections['pos-mid'].appendChild(medBelow);
+
+            // Init other sections
+            for (let key in sections) {
+                if(key === 'pos-mid') continue;
+                sections[key].className = `card-section ${key}`;
+            }
+
+            // Fill sections based on mapping
+            for (let header in mapping) {
+                const pos = mapping[header];
+                const value = row[header] || '';
+                
+                if (pos === 'omit') continue;
+
+                if (pos === 'big-above') {
+                    bigAbove.textContent += (bigAbove.textContent ? ' ' : '') + value;
+                } else if (pos === 'med-below') {
+                    medBelow.textContent += (medBelow.textContent ? ' ' : '') + value;
+                } else {
+                    sections[pos].textContent += (sections[pos].textContent ? ' ' : '') + value;
+                }
+            }
+
+            // Append all sections to card
+            Object.values(sections).forEach(s => card.appendChild(s));
+            printArea.appendChild(card);
+        });
+    }
+</script>
+
+</body>
+</html>
