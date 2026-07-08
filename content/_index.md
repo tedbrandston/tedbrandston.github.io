@@ -9,7 +9,7 @@ draft: false
 A question that pops into my head when nothing else is going on.
 
 In no particular order:
-* A parent of two small kids.
+* A parent of two ~~small~~ kids.
 * A software engineer. 
 * Someone who cares about communication.
 
